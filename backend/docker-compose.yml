@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:15
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - backend_network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: node_backend
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - database
+    networks:
+      - backend_network
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+networks:
+  backend_network:
+    driver: bridge
+
+volumes:
+  db_data:
