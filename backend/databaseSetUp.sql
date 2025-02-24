@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS Admin (
+    id SERIAL PRIMARY KEY,
+    token VARCHAR (255) UNIQUE NOT NULL,
+    name VARCHAR (255) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Corrector (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR (255) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Corrections (
+    id SERIAL PRIMARY KEY,
+    corrector_id INT NOT NULL,
+    module VARCHAR (255) NOT NULL,
+    metting VARCHAR (255) NOT NULL,
+    student VARCHAR (255) NOT NULL,
+    FOREIGN KEY (corrector_id) REFERENCES Corrector(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE 
+)
